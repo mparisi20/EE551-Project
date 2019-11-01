@@ -1,4 +1,4 @@
-# EE551 Project
+# EE-551: Engineering Python Final Project
 
 The goal of this project is to make a Discord Weather Bot. 
 
@@ -18,4 +18,6 @@ for 1000 calls a day, free of charge.
 
 
 
-By Max Parisi\nEE-551-A: Engineering Python\nFall 2019
+By Max Parisi
+
+Fall 2019
