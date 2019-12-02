@@ -10,7 +10,9 @@ from dotenv import load_dotenv
 
 # using library from https://github.com/Detrous/darksky
 from darksky.api import DarkSky, DarkSkyAsync
-from darksky.types import languages, units, weather
+from darksky.types import languages, units
+from darksky.types import weather as ds_weather
+
 from geopy.geocoders import Nominatim
 from discord.ext import commands
 
@@ -18,7 +20,7 @@ from discord.ext import commands
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
-API_KEY = os.getend('API_KEY')
+API_KEY = os.getenv('API_KEY')
 
 # used to convert municipality names into longitude/latitude
 geolocator = Nominatim(user_agent='WeatherBot')
@@ -33,6 +35,7 @@ async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
    
 @bot.command(name='weather', help='get the weather')
+@commands.cooldown(1.0, 2.0, commands.BucketType.default)
 async def weather(ctx, n=None, location=None):
     w = None # weather response object from Dark Sky
     if n is None and location is None:
@@ -67,53 +70,31 @@ async def weather(ctx, n=None, location=None):
         await ctx.send('invalid location')
         return
     await ctx.send(weatherResponse(w))
-        
-        
-        
-    await ctx.send('called !weather command')
 
 def getNDayWeather(location, n):
-    data = geolocator.geocode(location)
-    lat = data.latitude
-    long = data.longitude
+    loc_data = geolocator.geocode(location)
+    lat = loc_data.latitude
+    long = loc_data.longitude
     forecast = darksky.get_forecast(
         lat, long,
         extend=False,
         lang=languages.ENGLISH,
         units=units.AUTO,
-        exclude=[weather.MINUTELY, weather.ALERTS]
+        exclude=[ds_weather.MINUTELY, 
+                 ds_weather.ALERTS, 
+                 ds_weather.HOURLY]
     )
-    
-    # return a list of n DailyForecastItems
-    
-    for i in range(n):
-        
+    return {'loc': loc_data, 'days': n, 'data': forecast.daily.data[0:n]}
 
-    return dailyForecastItems
-
+# expects the dictionary returned from getNDayWeather
 def weatherResponse(w):
-
-
-
-
-
-"""
-@bot.event
-async def on_message(message):
-    if message.author == bot.user:
-        return
-    if 'happy birthday' in message.content.lower():
-        await message.channel.send('Happy Birthday! 🎈🎉')
-    elif message.content == 'raise-exception':
-        raise discord.DiscordException
-
-@bot.event
-async def on_error(event, *args, **kwargs):
-    with open('err.log', 'a') as f:
-        if event == 'on_message':
-            f.write(f'Unhandled message: {args[0]}\n')
-        else:
-            raise
-"""
+    response = f'Here is the **{w["days"]}-Day** forecast for **{w["loc"].address}**:\n\n'
+    for item in w["data"]:
+        response += 'Date: ' + item.time.strftime("%Y-%m-%d") + '\n'
+        response += 'High: ' + "{:5.1f}".format(item.temperature_high) + '\n'
+        response += 'Low: ' + "{:5.1f}".format(item.temperature_low) + '\n'
+        response += "{:.0f}".format(item.precip_probability*100.0) + '% chance of ' + item.precip_type + '\n'
+        response += '\n'
+    return response
 
 bot.run(TOKEN)
