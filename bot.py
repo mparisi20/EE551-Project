@@ -32,7 +32,13 @@ bot = commands.Bot(command_prefix='!')
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
    
-@bot.command(name='weather', help='get the weather')
+@bot.command(name='weather', 
+help="\n" +
+"!weather: return today's forecast in Hoboken, NJ\n" +
+"!weather [n]: return the n-day forecast for Hoboken, NJ. n's value must be between 1 and 7\n" +
+"!weather [location]: return today's forecast for a given municipality\n" +
+"!weather [n] [location]: return the n-day forecast for a given municipality. n's value must be between 1 and 7\n"
+)
 @commands.cooldown(1.0, 2.0, commands.BucketType.default)
 async def weather(ctx, n=None, location=None):
     w = None # weather response object from Dark Sky
