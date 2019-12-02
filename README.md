@@ -1,4 +1,4 @@
-# EE-551: Engineering Python Final Project
+# EE-551: Engineering Python Final Project (Complete)
 
 This is WeatherBot, a Discord Bot that provides daily weather forecasts for places all over the world. 
 
