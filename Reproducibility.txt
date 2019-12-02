@@ -1,0 +1,34 @@
+Directions for Reproducing WeatherBot:
+
+1. Install the following dependencies:
+pip install -U discord.py
+pip install -U python-dotenv
+pip install geopy
+pip3 install darksky_weather
+
+
+2. Make a Discord account, application, guild, and bot user by following
+ the directions at the beginning of the article at
+https://realpython.com/how-to-make-a-discord-bot-python/ 
+
+3. Register with DarkSky at https://darksky.net/dev/register
+and get an API key
+
+4. Create a file called ".env" with the following contents:
+
+# .env
+DISCORD_TOKEN=<token>
+API_KEY=<key>
+
+
+where <token> is the bot's token provided by Discord, 
+and <key> is the API key received with your DarkSky account
+
+NOTE: both the token and the API key are secret credential and are 
+not meant to be shared.
+
+5. 
+	git clone https://github.com/mparisi20/EE551-Project.git
+
+6. 
+	python bot.py

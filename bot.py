@@ -4,7 +4,6 @@
 # 12/2/19
 
 import os
-import random
 import discord
 from dotenv import load_dotenv
 
@@ -19,7 +18,6 @@ from discord.ext import commands
 # get environment variables
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
 API_KEY = os.getenv('API_KEY')
 
 # used to convert municipality names into longitude/latitude

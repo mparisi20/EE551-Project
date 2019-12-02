@@ -1,0 +1,1 @@
+Here are a group of test cases demonstrating WeatherBot's command syntaxes.
