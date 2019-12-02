@@ -15,4 +15,6 @@ for 1000 calls a day, free of charge.
 
 By Max Parisi
 
-Fall 2019
+Completed 12/2/2019
+
+I pledge my honor that I have abided by the Stevens Honor System.
